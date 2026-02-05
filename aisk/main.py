@@ -66,13 +66,20 @@ def main():
     if len(sys.argv) < 2:
         print("用法:")
         print("  aisk init            初始化配置")
-        print("  aisk '你的需求'        生成命令")
+        print("  aisk model           查看和切换模型")
+        print("  aisk '你的需求'       生成命令")
         return
 
     # 处理 init 子命令
     if sys.argv[1] == "init":
         from .init import main as init_main
         init_main()
+        return
+
+    # 处理 model 子命令
+    if sys.argv[1] == "model":
+        from .model import main as model_main
+        model_main()
         return
 
     user_query = " ".join(sys.argv[1:])
