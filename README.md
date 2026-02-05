@@ -7,6 +7,7 @@
 * **自然语言转命令**：不再需要苦记复杂的 `tar`、`find` 或 `ffmpeg` 参数
 * **智能平台识别**：自动识别操作系统（Windows/macOS/Linux），生成对应平台的命令
 * **交互式执行**：生成命令后，可以选择立即执行或取消
+* **多模型管理**：支持配置多个 AI 模型，随时切换使用
 * **高度可配置**：支持任意 OpenAI 兼容的 API，包括通义千问、OpenAI、DeepSeek 等
 * **跨平台支持**：支持 Windows、macOS 和 Linux
 * **轻量快捷**：基于 Python 开发，极速响应
@@ -37,6 +38,8 @@ pip install .
 
 ## ⚙️ 配置
 
+### 初始化配置
+
 在使用之前，需要先进行初始化配置：
 
 ```bash
@@ -45,13 +48,52 @@ aisk init
 
 交互式配置向导会引导你完成以下设置：
 
+- **配置名称**（必填）：为这个模型配置起个名字，方便识别（如 `qwen`、`gpt4` 等）
 - **API Key**（必填）：你的 AI 服务 API Key
 - **Base URL**（选填）：API 地址，默认为通义千问 `https://dashscope.aliyuncs.com/compatible-mode/v1`
 - **模型名称**（选填）：使用的模型，默认为 `qwen-max`
 
-配置文件会保存到 `~/.aisk/config.json`，后续可通过再次运行 `aisk init` 来修改配置。
+配置文件会保存到 `~/.aisk/config.json`。
 
 **支持任意 OpenAI 兼容的 API**，包括通义千问、OpenAI、DeepSeek 等。
+
+### 多模型管理
+
+你可以配置多个模型，方便在不同场景下切换：
+
+```bash
+# 添加通义千问模型
+aisk init
+# 输入配置名称: qwen
+
+# 添加 OpenAI 模型
+aisk init
+# 输入配置名称: gpt4
+
+# 列出所有模型并切换
+aisk model
+```
+
+运行 `aisk model` 后会显示所有已配置的模型，并支持交互式切换：
+
+```
+已配置的模型:
+============================================================
+
+1. qwen [当前]
+   模型: qwen-max
+   Base URL: https://dashscope.aliyuncs.com/compatible-mode/v1
+   API Key: sk-xxxx...xxxx
+
+2. gpt4
+   模型: gpt-4
+   Base URL: https://api.openai.com/v1
+   API Key: sk-yyyy...yyyy
+
+============================================================
+
+请输入模型编号或名称 (直接回车取消):
+```
 
 ---
 
