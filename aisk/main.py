@@ -1,35 +1,60 @@
 import os
 import sys
-import tty
-import termios
 from openai import OpenAI
+from .config import get_api_key, get_base_url, get_model_name, get_config_path
 
-# 配置环境变量读取
-API_KEY = os.getenv("ASK_API_KEY")
-BASE_URL = os.getenv("ASK_BASE_URL", "https://dashscope.aliyuncs.com/compatible-mode/v1")
-MODEL_NAME = os.getenv("ASK_MODEL_NAME", "qwen-max")
 
-def get_char():
-    """读取单个字符，支持 Esc、回车和普通字母"""
-    fd = sys.stdin.fileno()
-    old_settings = termios.tcgetattr(fd)
-    try:
-        tty.setraw(sys.stdin.fileno())
-        ch = sys.stdin.read(1)
-    finally:
-        termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
-    return ch
+# Windows 和 Unix 系统的字符输入兼容处理
+if sys.platform == "win32":
+    import msvcrt
+
+    def get_char():
+        """读取单个字符 (Windows)"""
+        return msvcrt.getch().decode('utf-8')
+else:
+    import tty
+    import termios
+
+    def get_char():
+        """读取单个字符，支持 Esc、回车和普通字母 (Unix)"""
+        fd = sys.stdin.fileno()
+        old_settings = termios.tcgetattr(fd)
+        try:
+            tty.setraw(sys.stdin.fileno())
+            ch = sys.stdin.read(1)
+        finally:
+            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+        return ch
+
+def get_os_description():
+    """获取当前操作系统的描述"""
+    if sys.platform == "win32":
+        return "Windows"
+    elif sys.platform == "darwin":
+        return "macOS"
+    elif sys.platform.startswith("linux"):
+        return "Linux"
+    else:
+        return "Unix-like"
 
 def get_command(nl_input):
-    if not API_KEY:
-        return "Error: 请配置环境变量 ASK_API_KEY"
-    
+    api_key = get_api_key()
+    if not api_key:
+        return "Error: 请先运行 'aisk init' 进行配置"
+
+    base_url = get_base_url()
+    model_name = get_model_name()
+
+    # 获取当前操作系统并动态生成system prompt
+    os_type = get_os_description()
+    system_prompt = f"You are a {os_type} terminal expert. Return ONLY the shell command for {os_type}. No markdown, no explanation."
+
     try:
-        client = OpenAI(api_key=API_KEY, base_url=BASE_URL)
+        client = OpenAI(api_key=api_key, base_url=base_url)
         response = client.chat.completions.create(
-            model=MODEL_NAME,
+            model=model_name,
             messages=[
-                {"role": "system", "content": "You are a macOS terminal expert. Return ONLY the shell command. No markdown, no explanation."},
+                {"role": "system", "content": system_prompt},
                 {"role": "user", "content": nl_input}
             ]
         )
@@ -39,7 +64,15 @@ def get_command(nl_input):
 
 def main():
     if len(sys.argv) < 2:
-        print("用法: aisk '你的需求'")
+        print("用法:")
+        print("  aisk init            初始化配置")
+        print("  aisk '你的需求'        生成命令")
+        return
+
+    # 处理 init 子命令
+    if sys.argv[1] == "init":
+        from .init import main as init_main
+        init_main()
         return
 
     user_query = " ".join(sys.argv[1:])
