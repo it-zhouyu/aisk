@@ -1,6 +1,6 @@
 [project]
 name = "aisk"
-version = "0.1.0"
+version = "0.1.1"
 description = "AI-powered terminal command assistant"
 readme = "README.md"
 authors = [{ name = "it_zhouyu", email = "497269678@qq.com" }]
