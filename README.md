@@ -4,10 +4,12 @@
 
 ## ✨ 特性
 
-* **自然语言转命令**：不再需要苦记复杂的 `tar`、`find` 或 `ffmpeg` 参数。
-* **交互式执行**：生成命令后，你可以选择立即执行、复制或取消。
-* **高度可配置**：支持自定义 API Key、Base URL 以及模型（默认支持通义千问）。
-* **轻量快捷**：基于 Python 开发，极速响应。
+* **自然语言转命令**：不再需要苦记复杂的 `tar`、`find` 或 `ffmpeg` 参数
+* **智能平台识别**：自动识别操作系统（Windows/macOS/Linux），生成对应平台的命令
+* **交互式执行**：生成命令后，可以选择立即执行或取消
+* **高度可配置**：支持任意 OpenAI 兼容的 API，包括通义千问、OpenAI、DeepSeek 等
+* **跨平台支持**：支持 Windows、macOS 和 Linux
+* **轻量快捷**：基于 Python 开发，极速响应
 
 ---
 
@@ -19,7 +21,6 @@
 
 ```bash
 pip install aisk
-
 ```
 
 ### 方式 2：从源码安装
@@ -30,26 +31,27 @@ pip install aisk
 git clone https://github.com/it-zhouyu/aisk.git
 cd aisk
 pip install .
-
 ```
 
 ---
 
 ## ⚙️ 配置
 
-在使用之前，请确保你已配置环境变量。建议将以下内容添加到你的 `.zshrc` 或 `.bash_profile` 中：
+在使用之前，需要先进行初始化配置：
 
 ```bash
-# 必填：你的 API Key
-export ASK_API_KEY="your_api_key_here"
-
-# 选填：自定义 Base URL (默认为通义千问)
-export ASK_BASE_URL="https://dashscope.aliyuncs.com/compatible-mode/v1"
-
-# 选填：自定义模型 (默认为 qwen-max)
-export ASK_MODEL_NAME="qwen-max"
-
+aisk init
 ```
+
+交互式配置向导会引导你完成以下设置：
+
+- **API Key**（必填）：你的 AI 服务 API Key
+- **Base URL**（选填）：API 地址，默认为通义千问 `https://dashscope.aliyuncs.com/compatible-mode/v1`
+- **模型名称**（选填）：使用的模型，默认为 `qwen-max`
+
+配置文件会保存到 `~/.aisk/config.json`，后续可通过再次运行 `aisk init` 来修改配置。
+
+**支持任意 OpenAI 兼容的 API**，包括通义千问、OpenAI、DeepSeek 等。
 
 ---
 
@@ -61,32 +63,29 @@ export ASK_MODEL_NAME="qwen-max"
 
 ```bash
 aisk 帮我找到当前目录下所有大于 100MB 的 mp4 文件
-
 ```
 
 ### 2. 压缩/解压
 
 ```bash
 aisk 把当前文件夹打包成 tar.gz 格式，排除 node_modules
-
 ```
 
 ### 3. 系统操作
 
 ```bash
 aisk 查看并杀死占用 8080 端口的进程
-
 ```
 
 ---
 
 ## 🛠 交互逻辑
 
-生成命令后，`aisk` 会提示：
+生成命令后，`aisk` 会提示是否执行：
 
-* **Enter** 或 **Y**: 确认并立即执行命令。
-* **N**: 取消执行。
-* **Esc/其他**: 退出程序。
+* **Enter** 或 **Y**：确认并立即执行命令
+* **N**：取消执行
+* **Esc**：退出程序
 
 ---
 
