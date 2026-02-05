@@ -1,0 +1,18 @@
+[project]
+name = "aisk"
+version = "0.1.0"
+description = "AI-powered terminal command assistant"
+readme = "README.md"
+authors = [{ name = "it_zhouyu", email = "497269678@qq.com" }]
+license = { text = "MIT" }
+requires-python = ">=3.8"
+dependencies = [
+    "openai>=1.0.0",
+]
+
+[project.scripts]
+aisk = "aisk.main:main"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"

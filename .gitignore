@@ -1,0 +1,31 @@
+# --- Python 缓存与字节码 ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# --- 虚拟环境 (你截图中的 .venv) ---
+.venv/
+venv/
+env/
+ENV/
+
+# --- 构建产物与分发包 (你截图中的 build 和 egg-info) ---
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# --- 依赖锁定文件 ---
+# 如果这是一个终端工具（App），建议保留 uv.lock 以保证他人安装的版本与你一致。
+# 如果你确定不想提交它，可以取消下面这一行的注释：
+# uv.lock
+
+# --- IDE 与系统文件 ---
+.idea/
+.vscode/
+.DS_Store
+*.swp
+
+# --- 运行日志与临时文件 ---
+*.log
