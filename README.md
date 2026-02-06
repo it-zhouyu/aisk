@@ -51,7 +51,7 @@ aisk init
 - **配置名称**（必填）：为这个模型配置起个名字，方便识别（如 `qwen`、`gpt4` 等）
 - **API Key**（必填）：你的 AI 服务 API Key
 - **Base URL**（选填）：API 地址，默认为通义千问 `https://dashscope.aliyuncs.com/compatible-mode/v1`
-- **模型名称**（选填）：使用的模型，默认为 `qwen-max`
+- **模型名称**（选填）：使用的模型，默认为 `qwen3-max`
 
 配置文件会保存到 `~/.aisk/config.json`。
 
@@ -81,7 +81,7 @@ aisk model
 ============================================================
 
 1. qwen [当前]
-   模型: qwen-max
+   模型: qwen3-max
    Base URL: https://dashscope.aliyuncs.com/compatible-mode/v1
    API Key: sk-xxxx...xxxx
 

@@ -79,8 +79,8 @@ def get_model_name() -> str:
     """
     model_config = get_current_model_config()
     if model_config:
-        return model_config.get("model_name", "qwen-max")
-    return "qwen-max"
+        return model_config.get("model_name", "qwen3-max")
+    return "qwen3-max"
 
 
 def get_current_model_config() -> dict | None:

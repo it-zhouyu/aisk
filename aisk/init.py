@@ -4,7 +4,7 @@ from .config import save_config, load_config, get_config_path, get_all_models
 
 
 DEFAULT_BASE_URL = "https://dashscope.aliyuncs.com/compatible-mode/v1"
-DEFAULT_MODEL_NAME = "qwen-max"
+DEFAULT_MODEL_NAME = "qwen3-max"
 
 
 def init_config() -> None:
@@ -26,25 +26,18 @@ def init_config() -> None:
             modify_existing_model(models)
             return
 
-    # 获取模型名称（用于标识）
-    print("\n提示: 模型名称用于标识不同的模型配置，例如: qwen, openai, deepseek")
+    # 获取配置名称
+    print("\n提示: 配置名称用于标识不同的模型配置，例如: qwen, openai, deepseek")
     while True:
-        model_alias = input("请输入模型名称 (用于标识): ").strip()
+        model_alias = input("请输入配置名称: ").strip()
         if model_alias:
             # 检查是否已存在
             existing_names = [m.get("name") for m in models]
             if model_alias in existing_names:
-                print(f"❌ 模型名称 '{model_alias}' 已存在，请使用其他名称")
+                print(f"❌ 配置名称 '{model_alias}' 已存在，请使用其他名称")
                 continue
             break
-        print("❌ 模型名称不能为空，请重新输入")
-
-    # 获取 API Key
-    while True:
-        api_key = input("\n请输入 API Key (必填): ").strip()
-        if api_key:
-            break
-        print("❌ API Key 不能为空，请重新输入")
+        print("❌ 配置名称不能为空，请重新输入")
 
     # 获取 Base URL
     base_url_input = input(f"\n请输入 Base URL (直接回车使用默认值 {DEFAULT_BASE_URL}): ").strip()
@@ -53,6 +46,13 @@ def init_config() -> None:
     # 获取 Model Name
     model_input = input(f"\n请输入模型名称 (直接回车使用默认值 {DEFAULT_MODEL_NAME}): ").strip()
     model_name = model_input if model_input else DEFAULT_MODEL_NAME
+
+    # 获取 API Key
+    while True:
+        api_key = input("\n请输入 API Key (必填): ").strip()
+        if api_key:
+            break
+        print("❌ API Key 不能为空，请重新输入")
 
     # 创建新模型配置
     new_model = {
@@ -75,10 +75,10 @@ def init_config() -> None:
     config_path = get_config_path()
     print(f"\n✅ 模型配置已保存到: {config_path}")
     print("\n新模型信息:")
-    print(f"  模型标识: {model_alias}")
-    print(f"  API Key: {api_key[:8]}...{api_key[-4:]}")
+    print(f"  配置名称: {model_alias}")
     print(f"  Base URL: {base_url}")
     print(f"  模型名称: {model_name}")
+    print(f"  API Key: {api_key[:8]}...{api_key[-4:]}")
 
     is_current = " [当前模型]" if config.get("current_model") == model_alias else ""
     print(f"{is_current}")
